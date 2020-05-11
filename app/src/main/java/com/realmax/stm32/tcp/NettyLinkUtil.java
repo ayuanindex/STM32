@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,7 +46,6 @@ public class NettyLinkUtil {
             ChannelFuture cf = b.connect().sync(); // 异步连接服务器
             Log.d(TAG, "start: connected..."); // 连接完成
             status.success(eventLoopGroup);
-
             cf.channel().closeFuture().sync(); // 异步等待关闭连接channel
             Log.d(TAG, "start: closed.."); // 关闭完成
             status.error();

@@ -1,5 +1,7 @@
 package com.realmax.stm32.utils;
 
+import android.util.Log;
+
 import com.realmax.stm32.tcp.CustomerHandlerBase;
 
 import java.util.HashMap;
@@ -92,12 +94,11 @@ public class ValueUtil {
     /**
      * 发送获取摄像头摄像数据的指令
      *
-     * @param deviceId 摄像头的设备ID
-     * @param angleA   横向旋转角度---默认0
-     * @param angleB   纵向旋转角度---默认45
+     * @param deviceType 设备类型
+     * @param cameraNum  摄像头编号
      */
-    public static void sendCameraCmd(int deviceId, float angleA, float angleB) {
-        CustomerHandlerBase customerHandler = getHandlerHashMap().get("camera");
+    public static void sendCameraCmd(String deviceType, int cameraNum) {
+        CustomerHandlerBase customerHandler = getHandlerHashMap().get(CAMERA);
         if (customerHandler == null) {
             return;
         }
@@ -108,7 +109,8 @@ public class ValueUtil {
             return;
         }
 
-        String command = "{\"cmd\": \"start\", \"deviceId\": " + deviceId + ", \"angleA\": " + angleA + ", \"angleB\": " + angleB + "}";
+        String command = "{\"cmd\": \"start\", \"deviceType\": \"" + deviceType + "\", \"deviceId\": 1, \"cameraNum\": " + cameraNum + "}";
+        Log.d(TAG, "sendCameraCmd: " + command);
         /*String command = "{\"cmd\": \"start\", \"deviceType\": \"十字交叉路口\", \"deviceId\": 1, \"cameraNum\": 1}";*/
         handlerContext.writeAndFlush(Unpooled.copiedBuffer(option(EncodeAndDecode.getStrUnicode(command), (byte) 0x82)));
     }

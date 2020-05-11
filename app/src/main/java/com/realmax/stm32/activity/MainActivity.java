@@ -17,6 +17,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.realmax.stm32.R;
 import com.realmax.stm32.tcp.CustomerCallback;
 import com.realmax.stm32.tcp.CustomerHandlerBase;
+import com.realmax.stm32.utils.OrcUtils;
 import com.realmax.stm32.utils.ValueUtil;
 import com.realmax.stm32.view.ResultMaskView;
 
@@ -107,5 +108,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "getResultData: " + msg);
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ValueUtil.getConnectedStatus(ValueUtil.CAMERA)) {
+            ValueUtil.sendCameraCmd("相机A1", 1);
+        }
     }
 }
