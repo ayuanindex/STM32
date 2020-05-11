@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".activity.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#6F000000">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/pic_left" />
+
+        <TextView
+            android:id="@+id/tv_cameraStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="摄像头：已连接"
+            android:textColor="#FFFFFF" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_setting"
+            style="@style/clickStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="通讯设置"
+                android:textSize="14sp" />
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
+        <com.realmax.stm32.view.ResultMaskView
+            android:id="@+id/resultMaskView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:background="#6F000000"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_robotType"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="机器人型号：XXX"
+                android:textColor="#ffffff" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_currentCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="当前COM：5前置摄像头"
+                android:textColor="#ffffff" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_batteryAngle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="炮台角度：A（30），B（55）"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="#6F000000"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_target"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="发现目标：XXX"
+                android:textColor="#ffffff" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_coordinate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="坐标：XXX"
+                android:textColor="#ffffff" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="位置：XXX"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#6F000000">
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/pic_right" />
+
+        <TextView
+            android:id="@+id/tv_imStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="MI硬件：已连接"
+            android:textColor="#FFFFFF" />
+
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sw_isAi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:minWidth="60dp"
+            android:text="AI"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+</LinearLayout>

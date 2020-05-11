@@ -1,0 +1,36 @@
+{
+    "soc": [
+        "arm", 
+        "dsp", 
+        "npu"
+    ], 
+    "scale": [
+        0.007843, 
+        0.007843, 
+        0.007843
+    ], 
+    "means": [
+        127.5, 
+        127.5, 
+        127.5
+    ], 
+    "labels": [
+        "[default]", 
+        "target", 
+        "robot", 
+        "radar", 
+        "car"
+    ], 
+    "mid": 18318, 
+    "height": 640, 
+    "param_file_asset_path": "infer-detect/params.enc", 
+    "width": 640, 
+    "channelOrder": "CHW", 
+    "model_file_asset_path": "infer-detect/model.enc", 
+    "is_opt_model": false, 
+    "rid": 35979, 
+    "colorFormat": "BGR", 
+    "product": "EasyDL", 
+    "thresholdRec": 0.2, 
+    "nType": 103
+}

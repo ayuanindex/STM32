@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            style="@style/clickStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:rotation="180"
+            android:src="@drawable/pic_back" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/iv_back"
+            android:text="连接设置" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_cameraConnected"
+            style="@style/clickStyle"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="1000dp"
+            app:cardElevation="10dp">
+
+            <TextView
+                android:id="@+id/tv_camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/connectedError"
+                android:gravity="center"
+                android:text="摄像头"
+                android:textColor="#ffffff" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_imConnected"
+            style="@style/clickStyle"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="1000dp"
+            app:cardElevation="10dp">
+
+            <TextView
+                android:id="@+id/tv_im"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/connectedError"
+                android:gravity="center"
+                android:text="IM控制器"
+                android:textColor="#ffffff" />
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</LinearLayout>
