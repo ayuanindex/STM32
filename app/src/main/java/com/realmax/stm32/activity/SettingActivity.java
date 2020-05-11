@@ -68,7 +68,9 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
+        // 回显当前的连接状态
+        tvCamera.setBackgroundColor(getColor(ValueUtil.getConnectedStatus(ValueUtil.CAMERA) ? R.color.connectedSuccess : R.color.connectedError));
+        tvIm.setBackgroundColor(getColor(ValueUtil.getConnectedStatus(ValueUtil.IM) ? R.color.connectedSuccess : R.color.connectedError));
     }
 
     /**
@@ -109,9 +111,8 @@ public class SettingActivity extends AppCompatActivity {
             ThreadPoolManager.execute(() -> {
                 LinkBean linkBean = new LinkBean(type);
 
-                CustomerHandlerBase customerHandlerBase = ValueUtil.getHandler(type);
 
-                linkBean.connected(ipStr, portInt, customerHandlerBase, new NettyLinkUtil.Callback() {
+                linkBean.connected(ipStr, portInt, new NettyLinkUtil.Callback() {
                     @Override
                     public void success(EventLoopGroup eventLoopGroup) {
                         if (type.equals(ValueUtil.CAMERA)) {
@@ -133,7 +134,11 @@ public class SettingActivity extends AppCompatActivity {
                             tvIm.setBackgroundColor(getColor(R.color.connectedError));
                         }
 
-                        customerHandlerBase.getCustomerCallback().disConnected();
+                        // 存入状态
+                        ValueUtil.putConnectedStatus(type, false);
+
+                        // 调用监听
+                        ValueUtil.getHandler(type).getCustomerCallback().disConnected();
                     }
                 });
             });

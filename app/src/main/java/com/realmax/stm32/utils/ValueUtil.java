@@ -67,6 +67,10 @@ public class ValueUtil {
      */
     public static CustomerHandlerBase getHandler(String key) {
         CustomerHandlerBase customerHandlerBase = handlerHashMap.get(key);
+        if (customerHandlerBase == null) {
+            customerHandlerBase = new CustomerHandlerBase();
+            handlerHashMap.put(key, customerHandlerBase);
+        }
         return customerHandlerBase;
     }
 
@@ -78,10 +82,11 @@ public class ValueUtil {
      */
     public static Boolean getConnectedStatus(String key) {
         Boolean aBoolean = isConnectedHashMap.get(key);
-        if (aBoolean != null) {
-            return aBoolean;
+        if (aBoolean == null) {
+            aBoolean = false;
+            isConnectedHashMap.put(key, aBoolean);
         }
-        return false;
+        return aBoolean;
     }
 
     /**

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         cameraHandler = new CustomerHandlerBase();
         imHandler = new CustomerHandlerBase();
 
-        cameraHandler.setCustomerCallback(new CustomerCallback() {
+        ValueUtil.getHandler(ValueUtil.CAMERA).setCustomerCallback(new CustomerCallback() {
             @Override
             public void disConnected() {
                 Log.d(TAG, "disConnected: 摄像头断开");
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        imHandler.setCustomerCallback(new CustomerCallback() {
+        ValueUtil.getHandler(ValueUtil.IM).setCustomerCallback(new CustomerCallback() {
             @Override
             public void disConnected() {
                 Log.d(TAG, "disConnected: im断开");
@@ -107,8 +107,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "getResultData: " + msg);
             }
         });
-
-        ValueUtil.putHandler(ValueUtil.CAMERA, cameraHandler);
-        ValueUtil.putHandler(ValueUtil.IM, imHandler);
     }
 }

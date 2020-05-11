@@ -22,11 +22,10 @@ public class LinkBean {
         this.type = type;
     }
 
-    public void connected(String ip, int port, CustomerHandlerBase customerHandlerBase, NettyLinkUtil.Callback status) {
+    public void connected(String ip, int port, NettyLinkUtil.Callback status) {
         try {
-            ValueUtil.putHandler(type, customerHandlerBase);
             NettyLinkUtil nettyLinkUtil = new NettyLinkUtil(ip, port);
-            nettyLinkUtil.start(status, customerHandlerBase);
+            nettyLinkUtil.start(status, ValueUtil.getHandler(type));
         } catch (Exception e) {
             e.printStackTrace();
         }
