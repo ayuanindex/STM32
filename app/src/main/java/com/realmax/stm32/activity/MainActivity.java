@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void disConnected() {
                 Log.d(TAG, "disConnected: 摄像头断开");
-                tvCameraStatus.setText("摄像头：断开连接");
+                tvCameraStatus.setText("摄像头：已断开");
             }
 
             @Override
@@ -188,7 +188,27 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     ivImage.setImageBitmap(bitmap);
                     if (Integer.parseInt(cameraNum) == currentCamera) {
-                        tvCurrentCamera.setText("当前COM：" + currentCamera + "前置摄像头");
+                        String camera = "";
+                        switch (currentCamera) {
+                            case 1:
+                                camera = "前置摄像头";
+                                break;
+                            case 2:
+                                camera = "后置摄像头";
+                                break;
+                            case 3:
+                                camera = "左侧摄像头";
+                                break;
+                            case 4:
+                                camera = "右侧摄像头";
+                                break;
+                            case 5:
+                                camera = "2自由度摄像头";
+                                break;
+                            default:
+                                camera = "位置摄像头";
+                        }
+                        tvCurrentCamera.setText("当前COM：" + currentCamera + camera);
                     }
                 });
 
