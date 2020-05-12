@@ -31,7 +31,7 @@ public class OrcUtils {
     /**
      * 请替换为您的序列号
      */
-    private static final String SERIAL_NUM = "40B6-F224-D60F-B8A0";
+    private static final String SERIAL_NUM = "9231-7B58-0AA2-C403";
     private static final int MODEL_DETECT = 2;
     private Context context;
     private ConfigBean configBean;

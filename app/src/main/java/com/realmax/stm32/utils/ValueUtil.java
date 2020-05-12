@@ -112,7 +112,7 @@ public class ValueUtil {
         String command = "{\"cmd\": \"start\", \"deviceType\": \"" + deviceType + "\", \"deviceId\": 1, \"cameraNum\": " + cameraNum + "}";
         Log.d(TAG, "sendCameraCmd: " + command);
         /*String command = "{\"cmd\": \"start\", \"deviceType\": \"十字交叉路口\", \"deviceId\": 1, \"cameraNum\": 1}";*/
-        handlerContext.writeAndFlush(Unpooled.copiedBuffer(option(EncodeAndDecode.getStrUnicode(command), (byte) 0x82)));
+        handlerContext.writeAndFlush(Unpooled.copiedBuffer(option(EncodeAndDecode.getStrUnicode(command), (byte) 0x02)));
     }
 
     /**
@@ -120,7 +120,7 @@ public class ValueUtil {
      */
     public static void sendStopCmd() {
         try {
-            CustomerHandlerBase customerHandler = getHandlerHashMap().get("camera");
+            CustomerHandlerBase customerHandler = getHandlerHashMap().get(CAMERA);
             if (customerHandler == null) {
                 return;
             }

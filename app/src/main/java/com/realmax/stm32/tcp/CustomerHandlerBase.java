@@ -32,7 +32,7 @@ public class CustomerHandlerBase extends BaseNettyHandler {
             try {
                 JSONObject jsonObject = new JSONObject(jsonStr);
                 currentCommand = jsonObject.toString();
-                Log.d(TAG, "callbackFunction: " + currentCommand);
+                /*Log.d(TAG, "callbackFunction: " + currentCommand);*/
                 customerCallback.getResultData(jsonStr);
             } catch (JSONException e) {
                 getJson(jsonStr);
@@ -60,7 +60,7 @@ public class CustomerHandlerBase extends BaseNettyHandler {
                 String json = strings.toString();
                 strings = new StringBuffer();
                 currentCommand = json;
-                Log.d(TAG, "getJson: " + currentCommand);
+                /*Log.d(TAG, "getJson: " + currentCommand);*/
                 customerCallback.getResultData(json);
             }
         }

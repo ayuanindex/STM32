@@ -1,7 +1,13 @@
 package com.realmax.stm32.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -11,15 +17,24 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textview.MaterialTextView;
 import com.realmax.stm32.R;
 import com.realmax.stm32.tcp.CustomerCallback;
-import com.realmax.stm32.tcp.CustomerHandlerBase;
+import com.realmax.stm32.utils.EncodeAndDecode;
 import com.realmax.stm32.utils.OrcUtils;
+import com.realmax.stm32.utils.ThreadPoolManager;
 import com.realmax.stm32.utils.ValueUtil;
 import com.realmax.stm32.view.ResultMaskView;
+import com.realmax.stm32.view.model.BaseRectBoundResultModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * @author ayuan
@@ -41,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivRight;
     private TextView tvImStatus;
     private SwitchMaterial swIsAi;
-    private CustomerHandlerBase cameraHandler;
-    private CustomerHandlerBase imHandler;
+    private OrcUtils orcUtils;
+    private Handler uiHandler;
+    private boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initEvent();
-        initData();
+        requestPermission();
     }
 
     private void initView() {
@@ -77,13 +93,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         swIsAi.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-
+            resultMaskView.clear();
         });
     }
 
     private void initData() {
-        cameraHandler = new CustomerHandlerBase();
-        imHandler = new CustomerHandlerBase();
+        orcUtils = new OrcUtils(this);
+        uiHandler = new Handler(getMainLooper());
+        resultMaskView.setHandler(uiHandler);
 
         ValueUtil.getHandler(ValueUtil.CAMERA).setCustomerCallback(new CustomerCallback() {
             @Override
@@ -93,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void getResultData(String msg) {
-                Log.d(TAG, "getResultData: " + msg);
+                setImage(msg);
             }
         });
 
@@ -111,11 +128,72 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 请求必要的权限
+     */
+    @SuppressLint("NewApi")
+    private void requestPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
+        } else {
+            initData();
+        }
+    }
+
+
+    /**
+     * 设置照片
+     *
+     * @param msg json字符串
+     */
+    @SuppressLint("NewApi")
+    private void setImage(String msg) {
+        try {
+            if (TextUtils.isEmpty(msg)) {
+                return;
+            }
+            JSONObject jsonObject = new JSONObject(msg);
+            String cameraImg = jsonObject.optString("cameraImg");
+            Bitmap bitmap = EncodeAndDecode.base64ToImage(cameraImg);
+            ThreadPoolManager.execute(() -> {
+
+                runOnUiThread(() -> {
+                    ivImage.setImageBitmap(bitmap);
+                });
+
+                if (swIsAi.isChecked()) {
+                    if (flag) {
+                        flag = false;
+                        orcUtils.detect(bitmap, (Bitmap resultBitmap, List<BaseRectBoundResultModel> resultModels) -> {
+                            flag = true;
+                            if (swIsAi.isChecked()) {
+                                resultMaskView.setRectListInfo(resultModels, bitmap.getWidth(), bitmap.getHeight());
+                            }
+                        });
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+            String substring = msg.substring(1);
+            Log.d(TAG, "setImage: " + substring);
+            setImage(substring);
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         if (ValueUtil.getConnectedStatus(ValueUtil.CAMERA)) {
-            ValueUtil.sendCameraCmd("相机A1", 1);
+            ValueUtil.sendCameraCmd("坦克", 1);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ValueUtil.sendStopCmd();
+        orcUtils.close();
     }
 }
