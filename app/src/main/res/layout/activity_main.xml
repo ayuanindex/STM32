@@ -13,14 +13,23 @@
         android:layout_weight="1"
         android:background="#6F000000">
 
-        <ImageView
-            android:id="@+id/iv_left"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_left"
+            style="@style/clickStyle"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
-            android:src="@drawable/pic_left" />
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pic_left" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_cameraStatus"
@@ -83,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="机器人型号：XXX"
+                android:text="机器人型号：坦克"
                 android:textColor="#ffffff" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -143,15 +152,23 @@
         android:layout_weight="1"
         android:background="#6F000000">
 
-        <ImageView
-            android:id="@+id/iv_right"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_right"
+            style="@style/clickStyle"
             android:layout_width="40dp"
             android:layout_height="40dp"
-
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
-            android:src="@drawable/pic_right" />
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pic_right" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_imStatus"

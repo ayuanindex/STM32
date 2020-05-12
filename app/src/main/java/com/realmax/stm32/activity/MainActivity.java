@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +42,8 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private ImageView ivLeft;
+    public static final String DEVICETYPE = "坦克";
+    private CardView cardLeft;
     private TextView tvCameraStatus;
     private CardView cardSetting;
     private ImageView ivImage;
@@ -53,12 +55,13 @@ public class MainActivity extends AppCompatActivity {
     private MaterialTextView tvCoordinate;
     private MaterialTextView tvLocation;
     private RelativeLayout rlContent;
-    private ImageView ivRight;
+    private CardView cardRight;
     private TextView tvImStatus;
     private SwitchMaterial swIsAi;
     private OrcUtils orcUtils;
     private Handler uiHandler;
     private boolean flag = true;
+    private int currentCamera = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ivLeft = findViewById(R.id.iv_left);
+        cardLeft = findViewById(R.id.card_left);
         tvCameraStatus = findViewById(R.id.tv_cameraStatus);
         cardSetting = findViewById(R.id.card_setting);
         ivImage = findViewById(R.id.iv_image);
@@ -82,11 +85,12 @@ public class MainActivity extends AppCompatActivity {
         tvCoordinate = findViewById(R.id.tv_coordinate);
         tvLocation = findViewById(R.id.tv_location);
         rlContent = findViewById(R.id.rl_content);
-        ivRight = findViewById(R.id.iv_right);
+        cardRight = findViewById(R.id.card_right);
         tvImStatus = findViewById(R.id.tv_imStatus);
         swIsAi = findViewById(R.id.sw_isAi);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initEvent() {
         cardSetting.setOnClickListener((View v) -> {
             startActivity(new Intent(this, SettingActivity.class));
@@ -94,6 +98,26 @@ public class MainActivity extends AppCompatActivity {
 
         swIsAi.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
             resultMaskView.clear();
+        });
+
+        cardLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentCamera > 1) {
+                    currentCamera--;
+                }
+                ValueUtil.sendCameraCmd(DEVICETYPE, currentCamera);
+            }
+        });
+
+        cardRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentCamera < 5) {
+                    currentCamera++;
+                }
+                ValueUtil.sendCameraCmd(DEVICETYPE, currentCamera);
+            }
         });
     }
 
@@ -106,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void disConnected() {
                 Log.d(TAG, "disConnected: 摄像头断开");
+                tvCameraStatus.setText("摄像头：断开连接");
             }
 
             @Override
@@ -146,19 +171,25 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param msg json字符串
      */
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "SetTextI18n"})
     private void setImage(String msg) {
         try {
             if (TextUtils.isEmpty(msg)) {
                 return;
             }
+
             JSONObject jsonObject = new JSONObject(msg);
+            String cameraNum = jsonObject.optString("cameraNum");
+
             String cameraImg = jsonObject.optString("cameraImg");
             Bitmap bitmap = EncodeAndDecode.base64ToImage(cameraImg);
             ThreadPoolManager.execute(() -> {
 
                 runOnUiThread(() -> {
                     ivImage.setImageBitmap(bitmap);
+                    if (Integer.parseInt(cameraNum) == currentCamera) {
+                        tvCurrentCamera.setText("当前COM：" + currentCamera + "前置摄像头");
+                    }
                 });
 
                 if (swIsAi.isChecked()) {
@@ -186,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (ValueUtil.getConnectedStatus(ValueUtil.CAMERA)) {
-            ValueUtil.sendCameraCmd("坦克", 1);
+            ValueUtil.sendCameraCmd(DEVICETYPE, currentCamera);
+            tvCameraStatus.setText("摄像头：已连接");
         }
     }
 
